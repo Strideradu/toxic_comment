@@ -1,6 +1,2 @@
 *.csv
 *.hdf5
-model
-data
-ensemble
-result
