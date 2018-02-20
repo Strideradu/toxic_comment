@@ -1,7 +1,16 @@
+"""
+Code for load pretrained embeddings and convert the text to embeddings
+"""
 import numpy as np
 import tqdm
+import nltk
 
 def read_embedding_list(file_path):
+    """
+    This is used for load fasttext embeddings
+    :param file_path:
+    :return:
+    """
     embedding_word_dict = {}
     embedding_list = []
     with open(file_path) as f:
