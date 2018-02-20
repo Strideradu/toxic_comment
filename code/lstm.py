@@ -43,7 +43,7 @@ try:
     os.system("mkdir -p " + MODEL_DIR)
     os.system("mkdir -p " + RESULT_DIR)
 except:
-    print("Please manually create folder 'model' and 'result')
+    print("Please manually create folder 'model' and 'result'")
     pass
 
 # callback1
