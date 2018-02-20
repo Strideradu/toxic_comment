@@ -4,6 +4,16 @@ Code for load pretrained embeddings and convert the text to embeddings
 import numpy as np
 import tqdm
 import nltk
+import os
+import argparse
+import sys
+import pandas as pd
+
+UNKNOWN_WORD = "_UNK_"
+END_WORD = "_END_"
+NAN_WORD = "_NAN_"
+CLASSES = ["toxic", "severe_toxic", "obscene", "threat", "insult", "identity_hate"]
+
 
 def read_embedding_list(file_path):
     """
@@ -57,6 +67,7 @@ def convert_tokens_to_ids(tokenized_sentences, words_list, embedding_word_dict, 
         words_train.append(current_words)
     return words_train
 
+
 def tokenize_sentences(sentences, words_dict):
     tokenized_sentences = []
     for sentence in tqdm.tqdm(sentences):
@@ -73,3 +84,81 @@ def tokenize_sentences(sentences, words_dict):
         tokenized_sentences.append(result)
     return tokenized_sentences, words_dict
 
+
+def save(path, X_train, X_test, y_train, embeddings):
+    embedding_path = os.path.join(path, 'embeddings.npz')
+    np.savez(embedding_path, embeddings)
+
+    xtrain_path = os.path.join(path, 'train.npz')
+    np.savez(xtrain_path, X_train)
+
+    xtest_path = os.path.join(path, 'test.npz')
+    np.savez(xtest_path, X_test)
+
+    label_path = os.path.join(path, 'label.npz')
+    np.savez(label_path, y_train)
+
+
+def main():
+    parser = argparse.ArgumentParser(description="convert text to emebeddings")
+    parser.add_argument("train_file_path")
+    parser.add_argument("test_file_path")
+    parser.add_argument("embedding_path")
+    parser.add_argument("save_path")
+
+    try:
+        args = parser.parse_args()
+
+    except:
+        parser.print_help()
+        sys.exit(1)
+
+    print("Loading data...")
+    train_data = pd.read_csv(args.train_file_path)
+    test_data = pd.read_csv(args.test_file_path)
+
+    list_sentences_train = train_data["comment_text"].fillna(NAN_WORD).values
+    list_sentences_test = test_data["comment_text"].fillna(NAN_WORD).values
+    y_train = train_data[CLASSES].values
+
+    print("Tokenizing sentences in train set...")
+    tokenized_sentences_train, words_dict = tokenize_sentences(list_sentences_train, {})
+
+    print("Tokenizing sentences in test set...")
+    tokenized_sentences_test, words_dict = tokenize_sentences(list_sentences_test, words_dict)
+
+    words_dict[UNKNOWN_WORD] = len(words_dict)
+
+    print("Loading embeddings...")
+    embedding_list, embedding_word_dict = read_embedding_list(args.embedding_path)
+    embedding_size = len(embedding_list[0])
+
+    print("Preparing data...")
+    embedding_list, embedding_word_dict = clear_embedding_list(embedding_list, embedding_word_dict, words_dict)
+
+    embedding_word_dict[UNKNOWN_WORD] = len(embedding_word_dict)
+    embedding_list.append([0.] * embedding_size)
+    embedding_word_dict[END_WORD] = len(embedding_word_dict)
+    embedding_list.append([-1.] * embedding_size)
+
+    embedding_matrix = np.array(embedding_list)
+
+    id_to_word = dict((id, word) for word, id in words_dict.items())
+    train_list_of_token_ids = convert_tokens_to_ids(
+        tokenized_sentences_train,
+        id_to_word,
+        embedding_word_dict,
+        args.sentences_length)
+    test_list_of_token_ids = convert_tokens_to_ids(
+        tokenized_sentences_test,
+        id_to_word,
+        embedding_word_dict,
+        args.sentences_length)
+    X_train = np.array(train_list_of_token_ids)
+    X_test = np.array(test_list_of_token_ids)
+
+    save(args.save_path, X_train, X_test, y_train, embedding_matrix)
+
+
+if __name__ == '__main__':
+    main()
