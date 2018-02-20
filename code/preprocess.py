@@ -1,5 +1,7 @@
 """
 Code for load pretrained embeddings and convert the text to embeddings
+
+embedding used: https://github.com/facebookresearch/fastText/blob/master/docs/english-vectors.md
 """
 import numpy as np
 import tqdm
@@ -105,6 +107,7 @@ def main():
     parser.add_argument("test_file_path")
     parser.add_argument("embedding_path")
     parser.add_argument("save_path")
+    parser.add_argument("--sentences-length", type=int, default=500)
 
     try:
         args = parser.parse_args()
