@@ -1,4 +1,9 @@
 # Kaggle Toxic Comment 
+there are following folders:
+- code: contains all source code
+- model: contains hdf5 files (model parameters)
+- result: contains csv files (classification result of each individual model)
+- ensemble: contains csv files (ensemble learned from all results in the 'result' folder')
 
 ### Reference discussion
 1. [Translate back to augmentate the dataset](https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/discussion/48038)

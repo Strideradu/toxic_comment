@@ -39,9 +39,12 @@ EMBED_SIZE = 128
 MAX_FEATURES = 2000
 MAX_SENTENCE_LEN = 200
 OUTPUT_SIZE = 60
-
-os.system("mkdir -p " + MODEL_DIR)
-os.system("mkdir -p " + RESULT_DIR)
+try:
+    os.system("mkdir -p " + MODEL_DIR)
+    os.system("mkdir -p " + RESULT_DIR)
+except:
+    print("Please manually create folder 'model' and 'result')
+    pass
 
 # callback1
 # update learning rate (not used yet)
