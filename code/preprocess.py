@@ -107,7 +107,7 @@ def main():
     parser.add_argument("test_file_path")
     parser.add_argument("embedding_path")
     parser.add_argument("save_path")
-    parser.add_argument("--sentences-length", type=int, default=500)
+    parser.add_argument("--sentences-length", type=int, default=200)
 
     try:
         args = parser.parse_args()
