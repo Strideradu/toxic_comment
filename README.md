@@ -12,3 +12,4 @@ there are following folders:
 4. [stacking](https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/discussion/50046)
 5. [fasttext embeddings](https://www.kaggle.com/mschumacher/using-fasttext-models-for-robust-embeddings)
 6. [bidirection GRU, max and average pooling and concatenate](https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/discussion/48836#281494)
+7. [Optimizer and learning rate](https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/discussion/50050)
