@@ -10,6 +10,10 @@ import os
 import argparse
 import sys
 import pandas as pd
+from nltk.corpus import stopwords
+from nltk.tokenize import RegexpTokenizer
+from keras.preprocessing.text import Tokenizer
+from keras.preprocessing import sequence
 
 UNKNOWN_WORD = "_UNK_"
 END_WORD = "_END_"
@@ -101,6 +105,50 @@ def save(path, X_train, X_test, y_train, embeddings):
     np.savez(label_path, y_train)
 
 
+def clean_text(sentences):
+    stop_words = set(stopwords.words('english'))
+    stop_words.update(['.', ',', '"', "'", ':', ';', '(', ')', '[', ']', '{', '}'])
+
+    result = []
+    for senstence in tqdm(sentences):
+        tokens = tokenizer.tokenize(senstence)
+        filtered = [word for word in tokens if word not in stop_words]
+        result.append(" ".join(filtered))
+
+    return result
+
+def get_tokenizer(text, num_words, char_level = False):
+    tokenizer = Tokenizer(num_words=num_words, lower=True, char_level=char_level)
+    tokenizer.fit_on_texts(text)
+    return tokenizer
+
+def load_embedding(path):
+    embeddings_index = {}
+    f = codecs.open(path, encoding='utf-8')
+    for line in tqdm(f):
+        values = line.rstrip().rsplit(' ')
+        word = values[0]
+        coefs = np.asarray(values[1:], dtype='float32')
+        embeddings_index[word] = coefs
+    f.close()
+    return embeddings_index
+
+def prepare_embedding(embeddings_index, word_index, max_word):
+    words_not_found = []
+    nb_words = min(max_word, len(word_index))
+    embedding_matrix = np.zeros((nb_words, embed_dim))
+    for word, i in word_index.items():
+        if i >= nb_words:
+            continue
+        embedding_vector = embeddings_index.get(word)
+        if (embedding_vector is not None) and len(embedding_vector) > 0:
+            # words not found in embedding index will be all-zeros.
+            embedding_matrix[i] = embedding_vector
+        else:
+            words_not_found.append(word)
+
+    return embedding_matrix
+
 def main():
     parser = argparse.ArgumentParser(description="convert text to emebeddings")
     parser.add_argument("train_file_path")
@@ -108,6 +156,7 @@ def main():
     parser.add_argument("embedding_path")
     parser.add_argument("save_path")
     parser.add_argument("--sentences-length", type=int, default=200)
+    parser.add_argument("--max-words", type=int, default=200000)
 
     try:
         args = parser.parse_args()
@@ -124,19 +173,32 @@ def main():
     list_sentences_test = test_data["comment_text"].fillna(NAN_WORD).values
     y_train = train_data[CLASSES].values
 
+    cleaned_train = clean_text(list_sentences_train)
+    cleaned_test = clean_text(list_sentences_test)
+    tokenizer = get_tokenizer(cleaned_train + cleaned_test, args.max_words)
+
     print("Tokenizing sentences in train set...")
+    tokenized_sentences_train = tokenizer.texts_to_sequences(cleaned_train)
+    """
     tokenized_sentences_train, words_dict = tokenize_sentences(list_sentences_train, {})
+    """
+
 
     print("Tokenizing sentences in test set...")
+    tokenized_sentences_test = tokenizer.texts_to_sequences(cleaned_test)
+    """
     tokenized_sentences_test, words_dict = tokenize_sentences(list_sentences_test, words_dict)
-
+    """
+    words_dict = tokenizer.word_index
     words_dict[UNKNOWN_WORD] = len(words_dict)
 
     print("Loading embeddings...")
-    embedding_list, embedding_word_dict = read_embedding_list(args.embedding_path)
-    embedding_size = len(embedding_list[0])
+    #embedding_list, embedding_word_dict = read_embedding_list(args.embedding_path)
+    embedding_word_dict = load_embedding(args.embedding_path)
+    embedding_size = len(embedding_word_dict.values()[0])
 
     print("Preparing data...")
+    """
     embedding_list, embedding_word_dict = clear_embedding_list(embedding_list, embedding_word_dict, words_dict)
 
     embedding_word_dict[UNKNOWN_WORD] = len(embedding_word_dict)
@@ -145,7 +207,10 @@ def main():
     embedding_list.append([-1.] * embedding_size)
 
     embedding_matrix = np.array(embedding_list)
+    """
+    embedding_matrix = prepare_embedding(embedding_word_dict, words_dict, args.max_words)
 
+    """
     id_to_word = dict((id, word) for word, id in words_dict.items())
     train_list_of_token_ids = convert_tokens_to_ids(
         tokenized_sentences_train,
@@ -157,6 +222,11 @@ def main():
         id_to_word,
         embedding_word_dict,
         args.sentences_length)
+    """
+
+    train_list_of_token_ids = sequence.pad_sequences(tokenized_sentences_train, maxlen=args.sentences_length)
+    test_list_of_token_ids = sequence.pad_sequences(tokenized_sentences_test, maxlen=args.sentences_length)
+
     X_train = np.array(train_list_of_token_ids)
     X_test = np.array(test_list_of_token_ids)
 
