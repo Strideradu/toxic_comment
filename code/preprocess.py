@@ -110,7 +110,7 @@ def clean_text(sentences):
     stop_words.update(['.', ',', '"', "'", ':', ';', '(', ')', '[', ']', '{', '}'])
 
     result = []
-    for senstence in tqdm(sentences):
+    for senstence in tqdm.tqdm(sentences):
         tokens = tokenizer.tokenize(senstence)
         filtered = [word for word in tokens if word not in stop_words]
         result.append(" ".join(filtered))
@@ -125,7 +125,7 @@ def get_tokenizer(text, num_words, char_level = False):
 def load_embedding(path):
     embeddings_index = {}
     f = codecs.open(path, encoding='utf-8')
-    for line in tqdm(f):
+    for line in tqdm.tqdm(f):
         values = line.rstrip().rsplit(' ')
         word = values[0]
         coefs = np.asarray(values[1:], dtype='float32')
