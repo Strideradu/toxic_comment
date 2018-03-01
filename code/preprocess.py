@@ -106,6 +106,7 @@ def save(path, X_train, X_test, y_train, embeddings):
 
 
 def clean_text(sentences):
+    tokenizer = RegexpTokenizer(r'\w+')
     stop_words = set(stopwords.words('english'))
     stop_words.update(['.', ',', '"', "'", ':', ';', '(', ')', '[', ']', '{', '}'])
 
