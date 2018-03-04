@@ -5,8 +5,8 @@ embedding used: https://github.com/facebookresearch/fastText/blob/master/docs/en
 """
 import numpy as np
 import tqdm
+import os, re, csv, math, codecs
 import nltk
-import os
 import argparse
 import sys
 import pandas as pd
@@ -14,6 +14,7 @@ from nltk.corpus import stopwords
 from nltk.tokenize import RegexpTokenizer
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing import sequence
+from autocorrect import spell
 
 UNKNOWN_WORD = "_UNK_"
 END_WORD = "_END_"
@@ -75,6 +76,7 @@ def convert_tokens_to_ids(tokenized_sentences, words_list, embedding_word_dict, 
 
 
 def tokenize_sentences(sentences, words_dict):
+    # old tokenize sentense
     tokenized_sentences = []
     for sentence in tqdm.tqdm(sentences):
         if hasattr(sentence, "decode"):
@@ -105,15 +107,19 @@ def save(path, X_train, X_test, y_train, embeddings):
     np.savez(label_path, y_train)
 
 
-def clean_text(sentences):
+def clean_text(sentences, correct = Flase):
     tokenizer = RegexpTokenizer(r'\w+')
     stop_words = set(stopwords.words('english'))
     stop_words.update(['.', ',', '"', "'", ':', ';', '(', ')', '[', ']', '{', '}'])
 
     result = []
     for senstence in tqdm.tqdm(sentences):
+        senstence = senstence.replace("'","")
         tokens = tokenizer.tokenize(senstence)
-        filtered = [word for word in tokens if word not in stop_words]
+        if correct:
+            filtered = [spell(word) for word in tokens if word not in stop_words]
+        else:
+            filtered = [word for word in tokens if word not in stop_words]
         result.append(" ".join(filtered))
 
     return result
@@ -158,6 +164,7 @@ def main():
     parser.add_argument("save_path")
     parser.add_argument("--sentences-length", type=int, default=200)
     parser.add_argument("--max-words", type=int, default=200000)
+    parser.add_argument("--correct", action='store_true', type=bool, default=False)
 
     try:
         args = parser.parse_args()
