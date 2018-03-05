@@ -107,7 +107,7 @@ def save(path, X_train, X_test, y_train, embeddings):
     np.savez(label_path, y_train)
 
 
-def clean_text(sentences, correct = Flase):
+def clean_text(sentences, correct = False):
     tokenizer = RegexpTokenizer(r'\w+')
     stop_words = set(stopwords.words('english'))
     stop_words.update(['.', ',', '"', "'", ':', ';', '(', ')', '[', ']', '{', '}'])
@@ -140,7 +140,7 @@ def load_embedding(path):
     f.close()
     return embeddings_index
 
-def prepare_embedding(embeddings_index, word_index, max_word):
+def prepare_embedding(embeddings_index, word_index, max_word, embed_dim):
     words_not_found = []
     nb_words = min(max_word, len(word_index))
     embedding_matrix = np.zeros((nb_words, embed_dim))
@@ -164,7 +164,7 @@ def main():
     parser.add_argument("save_path")
     parser.add_argument("--sentences-length", type=int, default=200)
     parser.add_argument("--max-words", type=int, default=200000)
-    parser.add_argument("--correct", action='store_true', type=bool, default=False)
+    parser.add_argument("--correct", action='store_true', default=False)
 
     try:
         args = parser.parse_args()
@@ -181,8 +181,8 @@ def main():
     list_sentences_test = test_data["comment_text"].fillna(NAN_WORD).values
     y_train = train_data[CLASSES].values
 
-    cleaned_train = clean_text(list_sentences_train)
-    cleaned_test = clean_text(list_sentences_test)
+    cleaned_train = clean_text(list_sentences_train, args.correct)
+    cleaned_test = clean_text(list_sentences_test, args.correct)
     tokenizer = get_tokenizer(cleaned_train + cleaned_test, args.max_words)
 
     print("Tokenizing sentences in train set...")
@@ -203,7 +203,7 @@ def main():
     print("Loading embeddings...")
     #embedding_list, embedding_word_dict = read_embedding_list(args.embedding_path)
     embedding_word_dict = load_embedding(args.embedding_path)
-    embedding_size = len(embedding_word_dict.values()[0])
+    embedding_size = len(list(embedding_word_dict.values())[0])
 
     print("Preparing data...")
     """
@@ -216,7 +216,7 @@ def main():
 
     embedding_matrix = np.array(embedding_list)
     """
-    embedding_matrix = prepare_embedding(embedding_word_dict, words_dict, args.max_words)
+    embedding_matrix = prepare_embedding(embedding_word_dict, words_dict, args.max_words, embedding_size)
 
     """
     id_to_word = dict((id, word) for word, id in words_dict.items())
