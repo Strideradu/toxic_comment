@@ -18,3 +18,4 @@ there are following folders:
 10. [sequence length and number of max features](https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/discussion/48836#287803)
 11. [Dropout setup](https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/discussion/50888#290493)
 12. [CapsuleNet 0.9859](https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/forums/t/51073/about-merge?forumMessageId=292053#post292053)
+13.  [HAN and DPCNN, seems high LB](https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/discussion/50807)
