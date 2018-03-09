@@ -27,8 +27,8 @@
       <file leaf-file-name="nbsvm.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/nbsvm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3400">
-              <caret line="172" column="41" lean-forward="false" selection-start-line="172" selection-start-column="41" selection-end-line="172" selection-end-column="41" />
+            <state relative-caret-position="271">
+              <caret line="152" column="37" lean-forward="true" selection-start-line="152" selection-start-column="37" selection-end-line="152" selection-end-column="37" />
               <folding>
                 <element signature="e#261#280#0" expanded="true" />
               </folding>
@@ -434,8 +434,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/nbsvm.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3400">
-          <caret line="172" column="41" lean-forward="false" selection-start-line="172" selection-start-column="41" selection-end-line="172" selection-end-column="41" />
+        <state relative-caret-position="271">
+          <caret line="152" column="37" lean-forward="true" selection-start-line="152" selection-start-column="37" selection-end-line="152" selection-end-column="37" />
           <folding>
             <element signature="e#261#280#0" expanded="true" />
           </folding>

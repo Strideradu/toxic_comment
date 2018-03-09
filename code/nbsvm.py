@@ -171,3 +171,6 @@ def main():
     submid = pd.DataFrame({'id': subm["id"]})
     submission = pd.concat([submid, pd.DataFrame(prfull, columns=label_cols)], axis=1)
     submission.to_csv(args.save_path + '/sub_' + model_type + 'x' + str(cval) + 'f' + str(nfolds) + '_' + todate + '.csv', index=False)
+
+if __name__ == '__main__':
+    main()
