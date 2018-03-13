@@ -85,9 +85,9 @@ def get_subs(nums):
 
 def get_subs(paths):
     subs = np.hstack(
-        [np.array(pd.read_csv(os.path.join(path, "submit"))[LABELS]) for path in subpaths])
+        [np.array(pd.read_csv(os.path.join(path, "submit"))[LABELS]) for path in paths])
     oofs = np.hstack(
-        [np.array(pd.read_csv(os.path.join(path, "valid"))[LABELS]) for path in subpaths])
+        [np.array(pd.read_csv(os.path.join(path, "valid"))[LABELS]) for path in paths])
     return subs, oofs
 
 
