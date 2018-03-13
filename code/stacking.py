@@ -84,10 +84,11 @@ def get_subs(nums):
 
 
 def get_subs(paths):
+
     subs = np.hstack(
-        [np.array(pd.read_csv(os.path.join(path, "submit"))[LABELS]) for path in paths])
+        [np.array(pd.read_csv(os.path.join(path, "submit"))[LABELS]) for path in subpaths])
     oofs = np.hstack(
-        [np.array(pd.read_csv(os.path.join(path, "valid"))[LABELS]) for path in paths])
+        [np.array(pd.read_csv(os.path.join(path, "valid"))[LABELS]) for path in subpaths])
     return subs, oofs
 
 
@@ -109,6 +110,7 @@ if __name__ == "__main__":
     sub = pd.read_csv(args.sample)
     INPUT_COLUMN = "comment_text"
     LABELS = train.columns[2:]
+    print(LABELS)
 
     # Import submissions and OOF files
     # 29: LightGBM trained on Fasttext (CV: 0.9765, LB: 0.9620)

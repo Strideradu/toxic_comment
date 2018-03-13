@@ -36,11 +36,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="stacking.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="stacking.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/stacking.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="326">
-              <caret line="89" column="80" lean-forward="false" selection-start-line="89" selection-start-column="80" selection-end-line="89" selection-end-column="80" />
+            <state relative-caret-position="410">
+              <caret line="136" column="0" lean-forward="true" selection-start-line="136" selection-start-column="0" selection-end-line="136" selection-end-column="0" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -48,7 +48,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="bagging.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="bagging.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bagging.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="441">
@@ -127,8 +127,8 @@
         <option value="$PROJECT_DIR$/torch_utils.py" />
         <option value="$PROJECT_DIR$/preprocess.py" />
         <option value="$PROJECT_DIR$/nbsvm.py" />
-        <option value="$PROJECT_DIR$/stacking.py" />
         <option value="$PROJECT_DIR$/bagging.py" />
+        <option value="$PROJECT_DIR$/stacking.py" />
       </list>
     </option>
   </component>
@@ -526,22 +526,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/stacking.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="326">
-          <caret line="89" column="80" lean-forward="false" selection-start-line="89" selection-start-column="80" selection-end-line="89" selection-end-column="80" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/bagging.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="441">
           <caret line="21" column="107" lean-forward="false" selection-start-line="21" selection-start-column="106" selection-end-line="21" selection-end-column="107" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stacking.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="410">
+          <caret line="136" column="0" lean-forward="true" selection-start-line="136" selection-start-column="0" selection-end-line="136" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
           </folding>
         </state>
       </provider>
