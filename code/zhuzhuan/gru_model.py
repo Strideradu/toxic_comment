@@ -297,11 +297,11 @@ def read_dataset():
     data = np.load(embed_path)
     embedding_matrix = data['arr_0']
 
-    train_path = DATA_DIR + 'train.npz' 
+    train_path = DATA_DIR + 'train.npz'
     data = np.load(train_path)
     train_tokens = data['arr_0']
 
-    test_path = DATA_DIR + 'test.npz' 
+    test_path = DATA_DIR + 'test.npz'
     data = np.load(test_path)
     test_tokens = data['arr_0']
 
@@ -334,7 +334,7 @@ def main():
     # train the lstm model
     model = train_lstm_model(
             train_tokens,
-            train_labels, 
+            train_labels,
             vocab_size,
             embedding_matrix,
             call_backs)
